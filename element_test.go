@@ -331,3 +331,12 @@ func BenchmarkMulELEMENT(b *testing.B) {
 		benchResElement.Mul(&benchResElement, &x)
 	}
 }
+
+func BenchmarkMontMul(b *testing.B) {
+	x := Element{0xb1f598e5f390298f, 0x6b3088c3a380f4b8, 0x4d10c051c1fa23c0, 0x2945981a13aec13, 0x3bcea128c5c8d172, 0xdaa35e7a880a2ca}
+	y := Element{0x4c64af08c847d3ec, 0xf47665551a973a7a, 0x4f0090b4b602e334, 0x670a33daa7a418b4, 0x8b9b1631a9ecad43, 0x15e1e13af71de992}
+
+	for n := 0; n < b.N; n++ {
+		x.Mul(&x, &y)
+	}
+}
