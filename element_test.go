@@ -20,6 +20,24 @@ import (
     "testing"
 )
 
+func TestMulMod_BLS12381(t *testing.T) {
+    x := Element{0xb1f598e5f390298f, 0x6b3088c3a380f4b8, 0x4d10c051c1fa23c0, 0x2945981a13aec13, 0x3bcea128c5c8d172, 0xdaa35e7a880a2ca}
+    y := Element{0x4c64af08c847d3ec, 0xf47665551a973a7a, 0x4f0090b4b602e334, 0x670a33daa7a418b4, 0x8b9b1631a9ecad43, 0x15e1e13af71de992}
+    expected := Element{0x20b39e434f6b7627, 0xe3b9585c3bc798c3, 0xd601841435360731, 0x592efb881d54c66d, 0x8ba6599731e3b7f3, 0x8e7724179630faa}
+    mod := Element{0xb9feffffffffaaab, 0x1eabfffeb153ffff, 0x6730d2a0f6b0f624, 0x64774b84f38512bf, 0x4b1ba7b6434bacd7, 0x1a0111ea397fe69a}
+    var inv uint64
+    inv = 0x89f3fffcfffcfffd
+    out := Element{0,0,0,0,0,0}
+
+    out.Mul(&x, &y, &mod, inv)
+
+    for i := 0; i < 6; i++ {
+        if out[i] != expected[i] {
+            t.Fatalf("invalid result %x (expected) != %x", expected[i], out[i])
+        }
+    }
+}
+
 func BenchmarkMontMul_6limbs(b *testing.B) {
     x := Element{0xb1f598e5f390298f, 0x6b3088c3a380f4b8, 0x4d10c051c1fa23c0, 0x2945981a13aec13, 0x3bcea128c5c8d172, 0xdaa35e7a880a2ca}
     y := Element{0x4c64af08c847d3ec, 0xf47665551a973a7a, 0x4f0090b4b602e334, 0x670a33daa7a418b4, 0x8b9b1631a9ecad43, 0x15e1e13af71de992}
